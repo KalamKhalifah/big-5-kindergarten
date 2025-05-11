@@ -1,8 +1,23 @@
-import type { Answer, DomainScore, FacetScore, Question, AllDomainsInfo } from '../types';
+import type { Answer, DomainScore, FacetScore, Question, AllDomainsInfo, ResultInterpretation } from '../types';
 import { questions } from '../data/questions';
 import { domainDetails } from '../data/domains';
 
-const MAX_SCORE_PER_QUESTION = 4; // Assuming scores range from 1-5, so max diff is 4 (5-1)
+const MAX_SCORE_PER_QUESTION = 4; // Assuming scores range from 0-4 or 1-5 (differs by choice)
+
+// Thresholds for low, neutral, high interpretation based on percentage of maxScore
+const LOW_THRESHOLD_PERCENTAGE = 0.35; // Scores below this are "low"
+const HIGH_THRESHOLD_PERCENTAGE = 0.85; // Scores above this are "high", between are "neutral"
+
+const determineResultInterpretation = (score: number, maxScore: number): ResultInterpretation => {
+  if (maxScore === 0) return 'neutral'; // Avoid division by zero, default to neutral
+  const percentage = score / maxScore;
+  if (percentage < LOW_THRESHOLD_PERCENTAGE) {
+    return 'low';
+  } else if (percentage > HIGH_THRESHOLD_PERCENTAGE) {
+    return 'high';
+  }
+  return 'neutral';
+};
 
 export const calculateScores = (answers: Answer[]): DomainScore[] => {
   const domainScores: { [key: string]: Partial<DomainScore> & { facetScoresMap: { [key: number]: Partial<FacetScore> & { questionCount: number } } } } = {};
@@ -14,7 +29,7 @@ export const calculateScores = (answers: Answer[]): DomainScore[] => {
       domain: domainKey as Question['domain'],
       name: domainInfo.name,
       description: domainInfo.description,
-      observationGuide: domainInfo.observationGuide, // Add observation guide
+      observationGuide: domainInfo.observationGuide,
       score: 0,
       maxScore: 0,
       facetScoresMap: {},
@@ -43,11 +58,6 @@ export const calculateScores = (answers: Answer[]): DomainScore[] => {
 
     if (domain) {
       domain.score! += answer.score;
-      // Max score for a question is fixed (e.g. 4 if choices are 1-5)
-      // Or, if using keyed scoring, it's the max possible score for that question type.
-      // For simplicity, let's assume a fixed max score contribution per question.
-      // This needs to align with how `choices.ts` scores are structured.
-      // If choices are e.g. 0,1,2,3,4, then max score is 4.
       domain.maxScore! += MAX_SCORE_PER_QUESTION; 
     }
 
@@ -58,10 +68,10 @@ export const calculateScores = (answers: Answer[]): DomainScore[] => {
     }
   });
   
-  // Finalize facetScores and convert map to array
+  // Finalize facetScores and convert map to array, calculate result interpretation
   return Object.values(domainScores).map(ds => {
     const facetScoresArray: FacetScore[] = Object.values(ds.facetScoresMap!)
-      .filter(fs => fs.questionCount && fs.questionCount > 0) // Only include facets that had questions
+      .filter(fs => fs.questionCount && fs.questionCount > 0)
       .map(fs => ({
         facet: fs.facet!,
         name: fs.name!,
@@ -70,14 +80,17 @@ export const calculateScores = (answers: Answer[]): DomainScore[] => {
         description: fs.description!,
       }));
 
+    const resultInterpretation = determineResultInterpretation(ds.score!, ds.maxScore!);
+
     return {
       domain: ds.domain!,
       name: ds.name!,
       score: ds.score!,
       maxScore: ds.maxScore!,
       description: ds.description!,
-      observationGuide: ds.observationGuide!, // Ensure observation guide is passed
+      observationGuide: ds.observationGuide!,
       facetScores: facetScoresArray,
+      resultInterpretation: resultInterpretation, // Add interpretation here
     };
   });
 };
