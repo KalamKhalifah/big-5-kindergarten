@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif; /* A nice, clean sans-serif font */
+  @apply antialiased;
+}
+
+/* Add a default focus style for accessibility if not using Tailwind's focus-visible */
+*:focus {
+  /* outline: 2px solid theme('colors.sky.500'); */
+  /* outline-offset: 2px; */
+}
