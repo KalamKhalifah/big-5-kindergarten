@@ -56,6 +56,8 @@ export interface FacetScore {
   description: string;
 }
 
+export type ResultInterpretation = 'low' | 'neutral' | 'high';
+
 export interface DomainScore {
   domain: Question['domain'];
   name: string;
@@ -68,4 +70,5 @@ export interface DomainScore {
     high: string;
   };
   facetScores: FacetScore[];
+  resultInterpretation: ResultInterpretation; // Added field
 }
