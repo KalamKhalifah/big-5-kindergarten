@@ -3,7 +3,7 @@ import type { Question } from '../types';
 export const questions: Question[] = [
   { id: '43c98ce8-a07a-4dc2-80f6-c1b2a2485f06', text: 'Does the child seem to worry about new activities?', keyed: 'plus', domain: 'N', facet: 1 },
   { id: 'd50a597f-632b-4f7b-89e6-6d85b50fd1c9', text: 'Does the child make friends easily at recess or group time?', keyed: 'plus', domain: 'E', facet: 1 },
-  { id: '888dd864-7449-4e96-8d5c-7a439603ea91', text: 'Does the child show a vivid imagination in play?', keyed: 'plus', domain: 'O', facet: 1 },
+  { id: '888dd864-7449-4e96-8d5c-7a439603ea91', text: 'Does the child show a strong imagination in play?', keyed: 'plus', domain: 'O', facet: 1 },
   { id: 'ce2fbbf8-7a97-4199-bda5-117e4ecdf3b6', text: 'Does the child openly trust classmates and adults?', keyed: 'plus', domain: 'A', facet: 1 },
   { id: 'c7f53c3c-2e77-432f-bb71-7470b67d3aa9', text: 'Does the child stick with an activity until it’s done?', keyed: 'plus', domain: 'C', facet: 1 },
   { id: '48ad12ce-470e-4339-90ac-ea8c43a0103e', text: 'Does the child get angry or upset quickly?', keyed: 'plus', domain: 'N', facet: 2 },
@@ -71,7 +71,7 @@ export const questions: Question[] = [
   { id: '751a04bc-5adf-485a-8ea4-4308406ae85b', text: 'Does the child say they do not like poems or rhymes?', keyed: 'minus', domain: 'O', facet: 2 },
   { id: '982e83c2-d34e-48da-9c71-78494ab05c85', text: 'Does the child take advantage when another child shares?', keyed: 'minus', domain: 'A', facet: 2 },
   { id: 'f4891687-0ff0-47af-a4f6-d1202c8f6676', text: 'Does the child leave a mess in their cubby or desk?', keyed: 'minus', domain: 'C', facet: 2 },
-  { id: '743d8973-1de1-4485-91b4-8a5cf63e7d44', text: 'Does the child often look “down in the dumps”?', keyed: 'plus', domain: 'N', facet: 3 },
+  { id: '743d8973-1de1-4485-91b4-8a5cf63e7d44', text: 'Does the child often lacking engagement or enthusiasm?', keyed: 'plus', domain: 'N', facet: 3 },
   { id: '2452f034-8273-4f71-9122-a40f5ead31ba', text: 'Does the child try to take control of group activities?', keyed: 'plus', domain: 'E', facet: 3 },
   { id: '2a300001-6e05-4c79-b8b5-2ccae4c3d463', text: 'Does the child rarely show how they feel inside?', keyed: 'minus', domain: 'O', facet: 3 },
   { id: 'cd54bd76-ca9c-4030-b325-bb8d896bcb3f', text: 'Does the child seem uncaring if a friend is upset?', keyed: 'minus', domain: 'A', facet: 3 },
