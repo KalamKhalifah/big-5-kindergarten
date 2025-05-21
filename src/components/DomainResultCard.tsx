@@ -23,7 +23,8 @@ const ScoreBar: React.FC<{ score: number; maxScore: number; }> = ({ score, maxSc
 };
 
 const DomainResultCard: React.FC<DomainResultCardProps> = ({ domainScore }) => {
-  const domainBaseName = domainScore.name.includes('(') ? domainScore.name.substring(0, domainScore.name.indexOf('(')).trim() : domainScore.name;
+  // The domain name is now a single word, no need to extract base name
+  const domainName = domainScore.name;
 
   const interpretationTextStyles: { [key in ResultInterpretation]: { text: string; color: string; borderColor: string; ringColor: string; bgColor: string; } } = {
     low: { text: "Low", color: "text-red-700", borderColor: "border-red-400", ringColor: "ring-red-300", bgColor: "bg-red-50" },
@@ -41,30 +42,33 @@ const DomainResultCard: React.FC<DomainResultCardProps> = ({ domainScore }) => {
       </p>
       <p className="text-sm text-slate-600 mb-1">Overall Score: {domainScore.score} / {domainScore.maxScore}</p>
       <ScoreBar score={domainScore.score} maxScore={domainScore.maxScore} />
-      
+
       <h4 className="text-lg font-semibold text-slate-700 mt-4 mb-2">What it means:</h4>
       <p className="text-slate-700 mt-2 mb-4 text-sm whitespace-pre-line">{domainScore.description}</p>
-      
+
       {domainScore.observationGuide && (
         <>
           <h4 className="text-lg font-semibold text-slate-700 mt-6 mb-3">Observation Guide for Teachers:</h4>
           <div className="space-y-3 text-sm">
-            <div 
+            <div
               className={`p-3 rounded-md border ${domainScore.resultInterpretation === 'low' ? `${interpretationTextStyles.low.bgColor} ${interpretationTextStyles.low.borderColor} ring-2 ${interpretationTextStyles.low.ringColor}` : 'bg-red-50 border-red-200'}`}
             >
-              <p className={`font-medium ${interpretationTextStyles.low.color}`}>Low {domainBaseName}:</p>
+              {/* Use the simple domain name here */}
+              <p className={`font-medium ${interpretationTextStyles.low.color}`}>Low {domainName}:</p>
               <p className="text-slate-600 whitespace-pre-line">{domainScore.observationGuide.low}</p>
             </div>
-            <div 
+            <div
               className={`p-3 rounded-md border ${domainScore.resultInterpretation === 'neutral' ? `${interpretationTextStyles.neutral.bgColor} ${interpretationTextStyles.neutral.borderColor} ring-2 ${interpretationTextStyles.neutral.ringColor}` : 'bg-yellow-50 border-yellow-200'}`}
             >
-              <p className={`font-medium ${interpretationTextStyles.neutral.color}`}>Neutral {domainBaseName}:</p>
+               {/* Use the simple domain name here */}
+              <p className={`font-medium ${interpretationTextStyles.neutral.color}`}>Neutral {domainName}:</p>
               <p className="text-slate-600 whitespace-pre-line">{domainScore.observationGuide.neutral}</p>
             </div>
-            <div 
+            <div
               className={`p-3 rounded-md border ${domainScore.resultInterpretation === 'high' ? `${interpretationTextStyles.high.bgColor} ${interpretationTextStyles.high.borderColor} ring-2 ${interpretationTextStyles.high.ringColor}` : 'bg-green-50 border-green-200'}`}
             >
-              <p className={`font-medium ${interpretationTextStyles.high.color}`}>High {domainBaseName}:</p>
+               {/* Use the simple domain name here */}
+              <p className={`font-medium ${interpretationTextStyles.high.color}`}>High {domainName}:</p>
               <p className="text-slate-600 whitespace-pre-line">{domainScore.observationGuide.high}</p>
             </div>
           </div>
