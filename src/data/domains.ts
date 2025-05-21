@@ -2,7 +2,7 @@ import type { AllDomainsInfo } from '../types';
 
 export const domainDetails: AllDomainsInfo = {
   N: {
-    name: 'Neuroticism (Feeling Upset or Worried Easily)',
+    name: 'Tense', // Changed from Neuroticism (Feeling Upset or Worried Easily)
     description:
       'Some children feel sad, worried, or upset more easily than others. They may cry when things go wrong, worry about being left out, or get upset if their routine changes. These feelings are okay — they just mean the child feels things deeply.\nOther children stay calm and bounce back quickly when something doesn’t go their way. They might still feel upset sometimes, but they handle it quietly and move on more easily.',
     observationGuide: {
@@ -21,7 +21,7 @@ export const domainDetails: AllDomainsInfo = {
     },
   },
   E: {
-    name: 'Extraversion (Being Outgoing and Full of Energy)',
+    name: 'Active', // Changed from Extraversion (Being Outgoing and Full of Energy)
     description:
       'Some children love to talk, play with others, and are full of energy. They like to be around people, join in games quickly, and enjoy excitement. These kids are often bubbly, playful, and eager to be part of the group.\nOther children prefer quieter time. They might play alone, speak softly, or enjoy peaceful activities like drawing or reading. These children may not always join group games right away, but they are still kind and friendly when approached.',
     observationGuide: {
@@ -40,7 +40,7 @@ export const domainDetails: AllDomainsInfo = {
     },
   },
   O: {
-    name: 'Openness to Experience (Liking New and Creative Things)',
+    name: 'Creative', // Changed from Openness to Experience (Liking New and Creative Things)
     description:
       'Some children love exploring new ideas, using their imagination, and trying different things. They may enjoy pretending, looking at art, or asking big questions about the world.\nOther children prefer routines and familiar things. They might like doing the same activities every day and find comfort in rules and clear directions.',
     observationGuide: {
@@ -59,7 +59,7 @@ export const domainDetails: AllDomainsInfo = {
     },
   },
   A: {
-    name: 'Agreeableness (Being Kind and Getting Along with Others)',
+    name: 'Friendly', // Changed from Agreeableness (Being Kind and Getting Along with Others)
     description:
       'Some children are naturally kind, friendly, and like to play nicely with others. They try to help friends, share toys, and are happy when everyone gets along. These children are usually very caring and believe that most people are good.\nOther children may prefer to do things their own way. They might not always want to share or help. They can be more serious or cautious when playing with others and may need extra time to trust or feel comfortable in groups.',
     observationGuide: {
@@ -78,7 +78,7 @@ export const domainDetails: AllDomainsInfo = {
     },
   },
   C: {
-    name: 'Conscientiousness (Being Careful, Focused, and Responsible)',
+    name: 'Responsible', // Changed from Conscientiousness (Being Careful, Focused, and Responsible)
     description:
       'Some children like to follow rules, stay organized, and finish what they start. They think before they act and try their best to do things the right way. These children are usually responsible, reliable, and show strong focus.\nOther children may act quickly without thinking. They like to enjoy the moment and may have a harder time sitting still, finishing tasks, or remembering rules. They might be more playful or creative but sometimes forget what they’re supposed to do.',
     observationGuide: {
