@@ -34,7 +34,7 @@ export interface DomainInfo {
   description: string; // "What it means"
   observationGuide: { // "Observation Guide for Teachers"
     low: string;
-    neutral: string;
+    neutral: string; // Keeping neutral text in guide for context, but interpretation is only low/high
     high: string;
   };
   facets: { [key: number]: FacetInfo }; // "Things to Look For (Facets)"
@@ -56,6 +56,7 @@ export interface FacetScore {
   description: string;
 }
 
+// Updated type to include 'neutral'
 export type ResultInterpretation = 'low' | 'neutral' | 'high';
 
 export interface DomainScore {
@@ -66,9 +67,9 @@ export interface DomainScore {
   description: string; // "What it means"
   observationGuide: { // "Observation Guide for Teachers"
     low: string;
-    neutral: string;
+    neutral: string; // Keeping neutral text in guide for context, but interpretation is only low/high
     high: string;
   };
   facetScores: FacetScore[];
-  resultInterpretation: ResultInterpretation; // Added field
+  resultInterpretation: ResultInterpretation; // Updated field type
 }
