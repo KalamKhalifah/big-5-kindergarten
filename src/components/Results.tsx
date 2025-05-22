@@ -21,17 +21,18 @@ const Results: React.FC<ResultsProps> = ({ answers, onRetake }) => {
     if (!resultsRef.current) return;
     setIsDownloading(true);
 
-    // Temporarily adjust styles for PDF generation if needed
-    // For example, ensure all content is visible and not cut off by overflow hidden
-    // This might involve temporarily changing some parent element styles.
+    const element = resultsRef.current;
+
+    // Temporarily add a class to constrain width for PDF generation
+    element.classList.add('pdf-container');
 
     // Hide buttons during PDF generation
-    const buttonsToHide = resultsRef.current.querySelectorAll('.pdf-hide-button');
+    const buttonsToHide = element.querySelectorAll('.pdf-hide-button');
     buttonsToHide.forEach(btn => (btn as HTMLElement).style.display = 'none');
 
 
     try {
-      const canvas = await html2canvas(resultsRef.current, {
+      const canvas = await html2canvas(element, {
         scale: 2, // Increase scale for better quality
         useCORS: true, // If you have external images
         logging: false,
@@ -90,6 +91,8 @@ const Results: React.FC<ResultsProps> = ({ answers, onRetake }) => {
     } finally {
       // Restore button visibility
       buttonsToHide.forEach(btn => (btn as HTMLElement).style.display = '');
+      // Remove the temporary class
+      element.classList.remove('pdf-container');
       setIsDownloading(false);
     }
   };
