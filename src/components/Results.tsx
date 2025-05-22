@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import type { Answer, DomainScore } from '../types';
 import { calculateScores } from '../utils/scoreCalculator';
 import DomainResultCard from './DomainResultCard';
+import TraitBarChart from './TraitBarChart'; // Import the new component
 import { Award, Download, Loader2 } from 'lucide-react';
 
 interface ResultsProps {
@@ -103,6 +104,13 @@ const Results: React.FC<ResultsProps> = ({ answers, onRetake }) => {
             Here is a summary of the personality assessment. These scores provide insights into different traits.
           </p>
         </div>
+
+        {/* Add the bar chart component here */}
+        <div className="mb-8">
+           <h3 className="text-2xl font-bold text-slate-800 mb-4 text-center">Trait Overview</h3>
+           <TraitBarChart scores={scores} />
+        </div>
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {scores.map((domainScore) => (
