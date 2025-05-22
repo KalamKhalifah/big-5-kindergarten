@@ -12,3 +12,11 @@ body {
   /* outline: 2px solid theme('colors.sky.500'); */
   /* outline-offset: 2px; */
 }
+
+/* Temporary class for PDF generation */
+.pdf-container {
+  max-width: 794px; /* Approximate width of A4 in pixels at 96 DPI (794px = 210mm * 96dpi / 25.4mm/inch) */
+  margin: 0 auto; /* Center the content */
+  padding: 20px; /* Add some padding */
+  box-sizing: border-box; /* Include padding in the width */
+}
