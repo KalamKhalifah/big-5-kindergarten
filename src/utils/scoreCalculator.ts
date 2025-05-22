@@ -2,21 +2,34 @@ import type { Answer, DomainScore, FacetScore, Question, AllDomainsInfo, ResultI
 import { questions } from '../data/questions';
 import { domainDetails } from '../data/domains';
 
-const MAX_SCORE_PER_QUESTION = 4; // Assuming scores range from 0-4 or 1-5 (differs by choice)
+const MAX_SCORE_PER_QUESTION = 4; // Assuming scores range from 0-4 (from choices.ts)
 
-// Thresholds for low, neutral, high interpretation based on percentage of maxScore
-const LOW_THRESHOLD_PERCENTAGE = 0.35; // Scores below this are "low"
-const HIGH_THRESHOLD_PERCENTAGE = 0.85; // Scores above this are "high", between are "neutral"
+// Define domain-specific raw score thresholds
+const domainThresholds: { [key in Question['domain']]: { low: number; high: number } } = {
+  N: { low: 70, high: 70 }, // <70 low, =70 neutral, >70 high
+  E: { low: 79, high: 79 }, // <79 low, =79 neutral, >79 high
+  O: { low: 70, high: 70 }, // <70 low, =70 neutral, >70 high
+  C: { low: 75, high: 75 }, // <75 low, =75 neutral, >75 high
+  A: { low: 65, high: 65 }, // <65 low, =65 neutral, >65 high
+};
 
-const determineResultInterpretation = (score: number, maxScore: number): ResultInterpretation => {
-  if (maxScore === 0) return 'neutral'; // Avoid division by zero, default to neutral
-  const percentage = score / maxScore;
-  if (percentage < LOW_THRESHOLD_PERCENTAGE) {
-    return 'low';
-  } else if (percentage > HIGH_THRESHOLD_PERCENTAGE) {
-    return 'high';
+// Updated function to use domain-specific raw score thresholds
+const determineResultInterpretation = (domainKey: Question['domain'], score: number): ResultInterpretation => {
+  const thresholds = domainThresholds[domainKey];
+
+  if (!thresholds) {
+    // Fallback or error handling if domain key is not found
+    console.warn(`Thresholds not defined for domain: ${domainKey}. Defaulting to neutral.`);
+    return 'neutral';
   }
-  return 'neutral';
+
+  if (score < thresholds.low) {
+    return 'low';
+  } else if (score > thresholds.high) {
+    return 'high';
+  } else {
+    return 'neutral'; // Score is exactly at the threshold
+  }
 };
 
 export const calculateScores = (answers: Answer[]): DomainScore[] => {
@@ -31,7 +44,7 @@ export const calculateScores = (answers: Answer[]): DomainScore[] => {
       description: domainInfo.description,
       observationGuide: domainInfo.observationGuide,
       score: 0,
-      maxScore: 0,
+      maxScore: 0, // Max score will be calculated based on answered questions
       facetScoresMap: {},
     };
 
@@ -42,7 +55,7 @@ export const calculateScores = (answers: Answer[]): DomainScore[] => {
         name: facetInfo.name,
         description: facetInfo.description,
         score: 0,
-        maxScore: 0,
+        maxScore: 0, // Max score will be calculated based on answered questions
         questionCount: 0,
       };
     }
@@ -58,20 +71,22 @@ export const calculateScores = (answers: Answer[]): DomainScore[] => {
 
     if (domain) {
       domain.score! += answer.score;
-      domain.maxScore! += MAX_SCORE_PER_QUESTION; 
+      // Max score for the domain is the sum of max possible scores for answered questions
+      domain.maxScore! += MAX_SCORE_PER_QUESTION;
     }
 
     if (facet) {
       facet.score! += answer.score;
+      // Max score for the facet is the sum of max possible scores for answered questions in that facet
       facet.maxScore! += MAX_SCORE_PER_QUESTION;
       facet.questionCount! += 1;
     }
   });
-  
+
   // Finalize facetScores and convert map to array, calculate result interpretation
   return Object.values(domainScores).map(ds => {
     const facetScoresArray: FacetScore[] = Object.values(ds.facetScoresMap!)
-      .filter(fs => fs.questionCount && fs.questionCount > 0)
+      .filter(fs => fs.questionCount && fs.questionCount > 0) // Only include facets with answered questions
       .map(fs => ({
         facet: fs.facet!,
         name: fs.name!,
@@ -80,7 +95,8 @@ export const calculateScores = (answers: Answer[]): DomainScore[] => {
         description: fs.description!,
       }));
 
-    const resultInterpretation = determineResultInterpretation(ds.score!, ds.maxScore!);
+    // Calculate interpretation using the updated function, passing the domain key
+    const resultInterpretation = determineResultInterpretation(ds.domain!, ds.score!);
 
     return {
       domain: ds.domain!,
